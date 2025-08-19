@@ -2,7 +2,7 @@
 
 ## TODO
 
-- [ ] Deployment to netlify
+- [x] Deployment to netlify
 - [ ] Add Pokemon list
 - [ ] Add Pokemon sheet
 - [ ] Configure analytics
