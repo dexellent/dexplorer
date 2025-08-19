@@ -3,8 +3,9 @@
 ## TODO
 
 - [x] Deployment to netlify
-- [ ] Add Pokemon list
-- [ ] Add Pokemon sheet
+- [x] Add Pokemon list
+- [x] Add Pokemon sheet
+- [ ] Connect to pokeAPI
 - [ ] Configure analytics
 - [ ] Add auth (with Clerk)
 - [ ] Set up database and datamodel
