@@ -171,24 +171,24 @@ export const mockPokemon: Pokemon[] = [
 
 export const getTypeColor = (type: string): string => {
   const typeColors: Record<string, string> = {
-    Normal: "bg-gray-400",
-    Fire: "bg-red-500",
-    Water: "bg-blue-500",
-    Electric: "bg-yellow-400",
-    Grass: "bg-green-500",
-    Ice: "bg-blue-300",
-    Fighting: "bg-red-700",
-    Poison: "bg-purple-500",
-    Ground: "bg-yellow-600",
-    Flying: "bg-indigo-400",
-    Psychic: "bg-pink-500",
-    Bug: "bg-green-400",
-    Rock: "bg-yellow-800",
-    Ghost: "bg-purple-700",
-    Dragon: "bg-indigo-700",
-    Dark: "bg-gray-800",
-    Steel: "bg-gray-500",
-    Fairy: "bg-pink-300",
+    normal: "bg-gray-400",
+    fire: "bg-red-500",
+    water: "bg-blue-500",
+    electric: "bg-yellow-400",
+    grass: "bg-green-500",
+    ice: "bg-blue-300",
+    lighting: "bg-red-700",
+    poison: "bg-purple-500",
+    ground: "bg-yellow-600",
+    flying: "bg-indigo-400",
+    psychic: "bg-pink-500",
+    bug: "bg-green-400",
+    rock: "bg-yellow-800",
+    ghost: "bg-purple-700",
+    dragon: "bg-indigo-700",
+    dark: "bg-gray-800",
+    steel: "bg-gray-500",
+    fairy: "bg-pink-300",
   }
-  return typeColors[type] || "bg-gray-400"
+  return typeColors[type.toLowerCase()] ?? "bg-gray-400"
 }
