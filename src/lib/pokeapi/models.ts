@@ -4,6 +4,13 @@ interface NamedAPIResource {
     url: string;
 }
 
+export interface RessourceListAPI {
+  count: number;
+    next: string | null;
+    previous: string | null;
+    results: NamedAPIResource[];
+}
+
 interface Language {
     name: string;
     url: string;
