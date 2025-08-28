@@ -1,3 +1,3 @@
-import type { Pokemon, PokemonSpecies } from "./models";
+import type { Pokemon, PokemonSpecies, RessourceListAPI } from "./models";
 
-export type { Pokemon, PokemonSpecies };
+export type { Pokemon, PokemonSpecies, RessourceListAPI };

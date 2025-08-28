@@ -12,6 +12,7 @@ import {
   fetchPokemonById,
   fetchPokemonSpeciesById,
 } from "~/lib/pokeapi/actions";
+import { getGenerationNumber } from "~/lib/utils";
 
 interface PokemonDetailPageProps {
   params: {
@@ -48,23 +49,6 @@ export default async function PokemonDetailPage({
       : "No description available.";
   };
 
-  // Get generation number from generation name
-  const getGenerationNumber = (): string => {
-    const genName = pokemonSpecies.generation.name;
-    const romanNumerals: Record<string, string> = {
-      "generation-i": "I",
-      "generation-ii": "II",
-      "generation-iii": "III",
-      "generation-iv": "IV",
-      "generation-v": "V",
-      "generation-vi": "VI",
-      "generation-vii": "VII",
-      "generation-viii": "VIII",
-      "generation-ix": "IX",
-    };
-    return romanNumerals[genName] ?? genName;
-  };
-
   // Calculate total stats
   const totalStats = pokemon.stats.reduce(
     (sum, stat) => sum + stat.base_stat,
@@ -94,7 +78,7 @@ export default async function PokemonDetailPage({
                 </span>
                 <span className="text-muted-foreground">•</span>
                 <span className="text-muted-foreground">
-                  Generation {getGenerationNumber()}
+                  Generation {getGenerationNumber(pokemonSpecies)}
                 </span>
               </div>
             </div>
