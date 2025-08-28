@@ -6,15 +6,19 @@ import { PokemonCard } from "~/components/pokemon-card";
 import { PokemonSearch } from "~/components/pokemon-search";
 import { ThemeSwitcher } from "~/components/theme-switcher";
 import type { Pokemon, PokemonSpecies } from "~/lib/pokeapi";
-import { fetchPokemonById, fetchPokemonList, fetchPokemonSpeciesById } from "~/lib/pokeapi/actions";
+import {
+  fetchPokemonById,
+  fetchPokemonList,
+  fetchPokemonSpeciesById,
+} from "~/lib/pokeapi/actions";
 
 interface PokemonPage {
   count: number;
-  previous: string|null;
-  next: string|null;
+  previous: string | null;
+  next: string | null;
   data: {
-    pokemon: Pokemon,
-    species: PokemonSpecies,
+    pokemon: Pokemon;
+    species: PokemonSpecies;
   }[];
 }
 
@@ -25,25 +29,39 @@ export default function HomePage() {
 
   useEffect(() => {
     const loadPokemonList = async () => {
-
       const response = await fetchPokemonList();
 
       const pokemonPage: PokemonPage = {
         count: response.count,
         previous: response.previous,
         next: response.next,
-        data: []
+        data: [],
       };
 
-      //parcourir les pokemon dans la réponse.
-      // Pour chaque pokemon fetch ses data et les push dans l'array pokemonPage.data
-      for (const ressource of response.results){
-        const pokemonSpecies = await fetchPokemonSpeciesById(ressource.name);
-        const pokemon = await fetchPokemonById(ressource.name);
-        pokemonPage.data.push({
-          pokemon,
-          species: pokemonSpecies,
-        });
+      /**
+       *parcourir les pokemon dans la réponse.
+       *Pour chaque pokemon fetch ses data et les push dans l'array pokemonPage.data
+       *Double array pour optimiser le temps
+       */
+      const promisePokemonArray: Promise<Pokemon>[] = [];
+      const promiseSpeciesArray: Promise<PokemonSpecies>[] = [];
+      for (const ressource of response.results) {
+        const pokemonSpecies = fetchPokemonSpeciesById(ressource.name);
+        const pokemon = fetchPokemonById(ressource.name);
+        promisePokemonArray.push(pokemon);
+        promiseSpeciesArray.push(pokemonSpecies);
+      }
+      // Promesse qui englobe 2 promesse pour réduire le temps de requête vers l'API
+      const pokemonArray = await Promise.all([
+        Promise.all(promisePokemonArray),
+        Promise.all(promiseSpeciesArray),
+      ]);
+      // Boucle sur les deux tableaux de pokemon et pokemonSpecies
+      for (let i = 0; i < pokemonArray[0].length; i++){
+          pokemonPage.data.push({
+            pokemon: pokemonArray[0][i]!,
+            species: pokemonArray[1][i]!,
+          });
       }
       // Stocker le resultat avec setPokemonList
       setPokemonList(pokemonPage);
@@ -63,7 +81,11 @@ export default function HomePage() {
         .includes(searchTerm.toLowerCase());
       const matchesType =
         selectedTypes.length === 0 ||
-        selectedTypes.some((type) => pokemonData.pokemon.types.some(pokemonType =>  pokemonType.type.name === type.toLowerCase()));
+        selectedTypes.some((type) =>
+          pokemonData.pokemon.types.some(
+            (pokemonType) => pokemonType.type.name === type.toLowerCase(),
+          ),
+        );
 
       return matchesSearch && matchesType;
     });
